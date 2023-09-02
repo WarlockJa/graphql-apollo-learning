@@ -3,19 +3,25 @@ export const typeDefs = `#graphql
         # ! - means the field is required
         id: ID!
         title: String!
+        # both array and items can't be nullable hence [String!]!
         platform: [String!]!
+        # items can't be nullable but array itself can [Review!]
+        reviews: [Review!]
     }
     type Review {
         id: ID!
         rating: Int!
         content: String!
+        game: Game!
+        author: Author!
     }
     type Author {
         id: ID!
         name: String!
         verified: Boolean!
+        reviews: [Review!]
     }
-    # required for every GraphQL schema. Describes the entry point
+    # required for every GraphQL schema. Describes the entry point (GET)
     type Query {
         reviews: [Review]
         review(id: ID!): Review
@@ -23,6 +29,22 @@ export const typeDefs = `#graphql
         game(id: ID!): Game
         authors: [Author]
         author(id: ID!): Author
+    }
+    # the rest of the CRUD
+    type Mutation {
+        deleteGame(id: ID!): [Game]
+        # input type is used to define all necessary fields
+        addGame(game: AddGameInput!): Game
+        updateGame(id: ID!, edits: EditGameInput!): Game
+    }
+    # collection of fields to be used a single argument in a mutation (TS type)
+    input AddGameInput {
+        title: String!
+        platform: [String!]!
+    }
+    input EditGameInput {
+        title: String
+        platform: [String!]
     }
 `;
 

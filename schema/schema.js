@@ -47,6 +47,3 @@ export const typeDefs = `#graphql
         platform: [String!]
     }
 `;
-
-// five basic types used by GraphQL
-// int, float, string, boolean, ID

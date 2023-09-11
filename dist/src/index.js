@@ -48,10 +48,10 @@ const resolvers = {
     },
     Review: {
         author(parent) {
-            return db.authors.find((author) => author.id === parent.author_id);
+            return db.authors.find((author) => author.id === parent.author.id);
         },
         game(parent) {
-            return db.games.find((game) => game.id === parent.game_id);
+            return db.games.find((game) => game.id === parent.game.id);
         },
     },
     // resolvers for mutations defines in schema

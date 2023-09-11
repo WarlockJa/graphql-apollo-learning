@@ -2,12 +2,18 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import "dotenv/config";
 import crypto from "crypto";
-// types
-import { typeDefs } from "../schema/schema.js";
+import { readFileSync } from "fs";
 // db
 import db from "../db/_db.js";
+// types
+// import { typeDefs } from "../schema/schema.js";
+// NOTE: this uses path relative to the root directory
+const typeDefs = readFileSync("./schema/schema.graphql", { encoding: "utf8" });
 
-const resolvers = {
+// importing Resolvers types
+import { Resolvers } from "./generated/graphql.js";
+
+const resolvers: Resolvers = {
   // a set of functions for the type Query defines in schema
   Query: {
     // we only define where the data is stored in the db. Apollo handles granular request for fields
@@ -46,10 +52,10 @@ const resolvers = {
   },
   Review: {
     author(parent) {
-      return db.authors.find((author) => author.id === parent.author_id);
+      return db.authors.find((author) => author.id === parent.author.id);
     },
     game(parent) {
-      return db.games.find((game) => game.id === parent.game_id);
+      return db.games.find((game) => game.id === parent.game.id);
     },
   },
   // resolvers for mutations defines in schema
